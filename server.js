@@ -5,12 +5,17 @@ const app = express()
 
 app.use(express.static('public'))
 
+// http routing
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'))
 })
-
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, '/public/notes.html'))
+})
+
+// api routing
+app.get('/api/notes', (req, res) => {
+    res.sendFile(path.join(__dirname, '/db/db.json'))
 })
 
 app.listen(PORT, () =>
