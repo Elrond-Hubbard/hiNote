@@ -1,5 +1,6 @@
 const path = require('path')
 const fs = require('fs')
+const crypto = require('crypto')
 const express = require('express')
 const db = require(path.join(__dirname, '/db/db.json'))
 
@@ -24,9 +25,10 @@ app.get('/api/notes', (req, res) => {
 })
 app.post('/api/notes', (req, res) => {
     newNote = req.body;
+    newNote.id = crypto.randomUUID();
     db.push(newNote);
-    const dbString = JSON.stringify(db, null, 2)
-    writeToFile(path.join(__dirname, '/db/db.json'), dbString)
+    const dbString = JSON.stringify(db, null, 2);
+    writeToFile(path.join(__dirname, '/db/db.json'), dbString);
     res.send(`POST successful!`);
 })
 
