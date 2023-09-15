@@ -24,12 +24,25 @@ app.get('/api/notes', (req, res) => {
     res.sendFile(path.join(__dirname, '/db/db.json'))
 })
 app.post('/api/notes', (req, res) => {
-    newNote = req.body;
+    const newNote = req.body;
     newNote.id = crypto.randomUUID();
     db.push(newNote);
     const dbString = JSON.stringify(db, null, 2);
     writeToFile(path.join(__dirname, '/db/db.json'), dbString);
+    console.log('POST deleted')
     res.send(`POST successful!`);
+})
+app.delete('/api/notes/:id', (req, res) => {
+    const deleteNoteId = req.params.id;
+    for (i = 0; i < db.length; i++) {
+        if (db[i].id === deleteNoteId) {
+            db.splice(i, 1)
+        }
+    }
+    const dbString = JSON.stringify(db, null, 2)
+    writeToFile(path.join(__dirname, '/db/db.json'), dbString)
+    console.log('Note DELETED')
+    res.send("DELETED")
 })
 
 app.listen(PORT, () =>
